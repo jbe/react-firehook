@@ -1,0 +1,18 @@
+{
+  "name": "react-firehook",
+  "version": "0.1.1",
+  "private": false,
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5"
+  },
+  "scripts": {
+    "build": "babel src -d lib",
+    "prepublish": "yarn run build"
+  }
+}
