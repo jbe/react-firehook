@@ -2,6 +2,7 @@
   "name": "react-firehook",
   "version": "0.1.1",
   "private": false,
+  "homepage": "https://github.com/jbe/react-firehook",
   "license": "MIT",
   "main": "lib/index.js",
   "module": "lib/index.js",
