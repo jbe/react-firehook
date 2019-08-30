@@ -77,49 +77,56 @@ export function logSubscriptions() {
     "font-size: 2em"
   );
 
-  snapshotSubscriberCache.forEach(item => {
-    const { ref, callers } = item;
+  snapshotSubscriberCache
+    .map(item => {
+      const { ref } = item;
 
-    let formattedRef = ref
-      ? (ref.path || ref._query || ref) + ""
-      : JSON.stringify(ref);
+      let formattedRef = ref
+        ? (ref.path || ref._query || ref) + ""
+        : JSON.stringify(ref);
 
-    const cached = !callers.length;
+      const maxLen = 60;
+      // if (formattedRef.length > maxLen)
+      //   formattedRef = formattedRef.substr(0, maxLen - 2) + "..";
+      if (formattedRef.length <= maxLen)
+        formattedRef = formattedRef + " ".repeat(maxLen - formattedRef.length);
 
-    const maxLen = 60;
-    // if (formattedRef.length > maxLen)
-    //   formattedRef = formattedRef.substr(0, maxLen - 2) + "..";
-    if (formattedRef.length <= maxLen)
-      formattedRef = formattedRef + " ".repeat(maxLen - formattedRef.length);
+      return { ...item, formattedRef };
+    })
+    .sort((a, b) => a.formattedRef.localeCompare(b.formattedRef))
+    .forEach(item => {
+      const { callers, formattedRef } = item;
 
-    const callerCounts = {};
-    callers.forEach(caller => {
-      if (!callerCounts[caller]) callerCounts[caller] = 1;
-      else callerCounts[caller] += 1;
+      const cached = !callers.length;
+
+      const callerCounts = {};
+      callers.forEach(caller => {
+        if (!callerCounts[caller]) callerCounts[caller] = 1;
+        else callerCounts[caller] += 1;
+      });
+
+      if (cached) {
+        console.log(
+          "%c" + formattedRef + " [cache timing out]",
+          "font-weight: bold; color: grey;"
+        );
+      } else {
+        console.log(
+          "%c" +
+            formattedRef +
+            "%c » " +
+            Object.keys(callerCounts)
+              .map(name =>
+                callerCounts[name] === 1
+                  ? name
+                  : name + " × " + callerCounts[name]
+              )
+              .join(", "),
+          "font-weight: bold",
+          "font-weight: bold; color: maroon"
+        );
+      }
     });
-
-    if (cached) {
-      console.log(
-        "%c" + formattedRef + " [cache timing out]",
-        "font-weight: bold; color: grey;"
-      );
-    } else {
-      console.log(
-        "%c" +
-          formattedRef +
-          "%c » " +
-          Object.keys(callerCounts)
-            .map(name =>
-              callerCounts[name] === 1
-                ? name
-                : name + " × " + callerCounts[name]
-            )
-            .join(", "),
-        "font-weight: bold",
-        "font-weight: bold; color: maroon"
-      );
-    }
-  });
 }
 
 const debouncedLogSubscriptions = debounce(logSubscriptions, 500);
