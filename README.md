@@ -4,11 +4,11 @@ React Firehook is a super effective and simple way to set up live Firestore subs
 
 **Unobtrusive** 🌳
 
-Use as much as you want. Can be gradually introduced or removed.
+Only use as much as you want. Can be gradually introduced or removed.
 
 **Fast development** 🔥
 
-Only one hook, regardless of whether you are subscribing to a document, collection or query. Returned collections are delivered as objects mapping keys to documents. Easy to remember and refactor.
+Use one hook, regardless of whether you are subscribing to a document, collection or query. When passing a collection or query ref, the results are delivered as an object mapping keys to documents.
 
 **Subscription caching** ♻️
 
@@ -16,7 +16,7 @@ Even though several components are subscribed to the same ref or query (accordin
 
 **High-tech logging** 🔎
 
-Shows all currently open subscriptions, as well as the components that are causing each one right now.
+Shows all currently open subscriptions, including the names of the source components and hooks making them.
 
 **Complete example component:**
 
@@ -64,3 +64,5 @@ configureFirehook({
   log: process.env.NODE_ENV === "development"
 });
 ```
+
+![Debug console screenshot](https://raw.githubusercontent.com/jbe/react-firehook/master/debug_log.png)
