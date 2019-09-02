@@ -66,3 +66,7 @@ configureFirehook({
 ```
 
 ![Debug console screenshot](https://raw.githubusercontent.com/jbe/react-firehook/master/debug_log.png)
+
+## Get without subscription
+
+`useFirestoreGet`, otherwise same api as above.

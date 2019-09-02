@@ -272,3 +272,33 @@ export function useSubscription(_ref) {
 
   return { ...state, enabled: !!ref };
 }
+
+export function useFirestoreGet(_ref) {
+  const ref = useMemoWithCustomEquals(_ref, refsOrFalseyValuesEqual);
+
+  const [state, setState] = useState({
+    data: null,
+    error: null,
+    ready: false,
+    ref,
+    id: ref && ref.id
+  });
+
+  useEffect(() => {
+    if (!ref) return;
+
+    ref.get().then(snapshot =>
+      setState({
+        data: snapshot.forEach
+          ? unwrapCollectionSnapshot(snapshot)
+          : snapshot.data(),
+        error: null,
+        ready: true,
+        ref: ref,
+        id: ref.id
+      })
+    );
+  }, [ref]);
+
+  return state;
+}
